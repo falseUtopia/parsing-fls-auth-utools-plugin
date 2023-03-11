@@ -20,7 +20,7 @@ window.exports = {
 
                 window.utools.ubrowser
                     .goto('https://fofa.info/result?qbase64=ImZscy1hdXRoIg%3D%3D')
-                    .devTools()
+                    // .devTools()
                     .evaluate(() => {
 
 
