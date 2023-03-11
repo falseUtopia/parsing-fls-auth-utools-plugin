@@ -2,7 +2,7 @@
   "pluginName": "parsing-fls-auth-utools-plugin",
   "description": "parsing-fls-auth-utools-plugin",
   "preload": "preload.js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "logo": "logo.png",
   "author": "falseUtopia",
   "homepage": "https://gitee.com/falseutopia/parsing-fls-auth-utools-plugin",
@@ -11,7 +11,7 @@
   },
   "features": [
     {
-      "code": "jetBrains系列 激活地址获取",
+      "code": "idea",
       "explain": "jetBrains系列 激活地址获取",
       "cmds": [
         "jetBrains",

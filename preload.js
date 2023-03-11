@@ -23,10 +23,14 @@ window.exports = {
                     .devTools()
                     .evaluate(() => {
 
-                        // 得到页面的第一个元素。
-                        let firstElement = document.body.firstChild
+
+                        let headerMainCon = document.getElementsByClassName("headerMainCon")[0];
+                        headerMainCon.setAttribute("onmouseover", "document.getElementsByClassName('headerMainCon')[0].setAttribute('style' , 'z-index:102')")
+                        headerMainCon.setAttribute("onmouseout", "document.getElementsByClassName('headerMainCon')[0].setAttribute('style' , 'z-index:100')")
+
                         // 整个页面
-                        let allHtml = document.documentElement.innerHTML;
+                        let allHtml = document.documentElement.innerHTML
+
                         // 获取地址的正则
                         let reg = /url=(.*?)\/auth/g;
 
@@ -41,21 +45,57 @@ window.exports = {
                         // 去重操作
                         url_array = Array.from(new Set(url_array))
 
-                        for (let url of url_array) {
-                            let html = `
-              <div class="urlBox" style="cursor: pointer;position: relative;z-index: 10000;">
-                <span style="color: white;background-color: #030915" onclick="navigator.clipboard.writeText('` + url + `').then(function() {})">` + url + ` 复制</span>
-              </div>
-              `
-                            let devElement = document.createElement("div")
-                            devElement.innerHTML = html;
-                            // 在 第一个元素之前插入
-                            document.body.insertBefore(devElement, firstElement);
 
-                            // var url = a+"/rpc/prolongTicket.action"
-                            // console.log(url)
+                        let urlBoxBigDiv = document.getElementsByClassName("urlBoxBigDiv")
+                        if (urlBoxBigDiv.length) {
+                            urlBoxBigDiv[0].remove()
+                        }
+
+                        // 得到页面的第一个元素。
+                        let firstElement = document.body.firstChild
+
+                        urlBoxBigDiv = document.createElement("div")
+                        urlBoxBigDiv.className = "urlBoxBigDiv"
+                        urlBoxBigDiv.style = "position: fixed; z-index: 101"
+
+                        let tipsNode = document.createElement("div");
+                        tipsNode.innerHTML = `<div class="urlBox" style="width: 400px;cursor: pointer; display:table; position: relative;z-index: 101;">
+                                                <span style="color: white;background-color: #030915;" >复制完成</span>
+                                             </div>`
+                        tipsNode.setAttribute("id", "tips")
+                        tipsNode.setAttribute("style", "display: none;")
+                        urlBoxBigDiv.appendChild(tipsNode)
+
+                        for (let [i, url] of url_array.entries()) {
+
+                            let html = `
+                                <div class="urlBox" style="width: 400px;cursor: pointer; display:inline-block; position: relative;z-index: 101;">
+                                    <span style="color: white;background-color: #030915;" onclick="
+            
+                                navigator.clipboard.writeText('` + url + `')
+                                    .then(function() {
+                                        document.getElementById('tips').setAttribute('style','display: table;')
+                               
+                                        setTimeout(()=>{
+                                            document.getElementById('tips').setAttribute('style','display: none;')
+                                        }, 1000);
+                                    })
+                 
+                           ">` + (i + 1) + `  ` + url + ` <span style="text-decoration: underline">复制</span></span> </div>
+                            `
+                            let urlBoxDiv = document.createElement("div")
+                            urlBoxDiv.innerHTML = html;
+                            urlBoxDiv.style = "display:table;"
+                            urlBoxBigDiv.appendChild(urlBoxDiv)
 
                         }
+
+                        // 在 第一个元素之前插入
+                        document.body.insertBefore(urlBoxBigDiv, firstElement);
+
+
+                        // var url = a+"/rpc/prolongTicket.action"
+                        // console.log(url)
 
                     })
                     .run()
